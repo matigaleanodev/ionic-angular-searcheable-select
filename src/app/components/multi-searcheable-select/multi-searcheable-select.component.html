@@ -1,0 +1,69 @@
+<ion-input
+  readonly
+  [helperText]="helpText()"
+  fill="outline"
+  [label]="title()"
+  [value]="formattedList()"
+  labelPlacement="floating"
+  (click)="isOpen.set(true)"
+>
+  <ion-icon slot="start" [name]="icon() ?? 'search'" color="primary" />
+
+  <ion-button fill="clear" slot="end" shape="round" (click)="isOpen.set(true)">
+    <ion-icon slot="icon-only" name="search" />
+  </ion-button>
+</ion-input>
+
+<ion-modal
+  [isOpen]="isOpen()"
+  [backdropDismiss]="true"
+  (didDismiss)="isOpen.set(false)"
+>
+  <ng-template>
+    <ion-header>
+      <ion-toolbar color="secondary">
+        <ion-buttons slot="start">
+          <ion-button>
+            <ion-icon slot="icon-only" [name]="icon() ?? 'search'" />
+          </ion-button>
+        </ion-buttons>
+        <ion-title>
+          <h5 class="ion-no-margin">
+            {{ title() }}
+          </h5>
+        </ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="isOpen.set(false)">
+            <ion-icon slot="icon-only" name="close" />
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="modal-content">
+      <ion-card>
+        <ion-searchbar
+          (ionInput)="onSearch($any($event.target).value)"
+          placeholder="Buscar..."
+          class="search-bar"
+          color="medium"
+        />
+        <ion-list lines="full">
+          @for (item of filteredData(); track $index) {
+          <ion-item [button]="true" (click)="cambiarCheck($event, item)">
+            <ion-label>
+              {{ item[viewField()] }}
+            </ion-label>
+            <ion-buttons slot="end">
+              <ion-checkbox disabled [checked]="isSelected(item)" />
+            </ion-buttons>
+          </ion-item>
+          } @empty {
+          <ion-item>
+            <ion-label> </ion-label>
+          </ion-item>
+          }
+        </ion-list>
+      </ion-card>
+    </ion-content>
+  </ng-template>
+</ion-modal>
