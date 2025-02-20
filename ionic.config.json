@@ -1,0 +1,7 @@
+{
+  "name": "searcheable-select",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
